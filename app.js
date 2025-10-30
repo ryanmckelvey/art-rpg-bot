@@ -9,7 +9,7 @@ import {
   verifyKeyMiddleware,
 } from 'discord-interactions';
 // import pool from './config/db.js';
-import { generateEggMessage, getGuild } from './utils.js';
+import { generateEggMessage, addMemberToRole } from './utils.js';
 import { createUser, getUserById } from './models/userModel.js';
 
 
@@ -64,7 +64,7 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
         console.log('Adding new user to RPG with ID:', addedUserId);
         createUser(addedUserId, 'PlaceholderUsername');//TODO: Replace PlaceholderUsername with actual username fetch.
         let message = `${addedUserId} has been added as a player to the RPG! 🎉`;
-        
+        addMemberToRole(addedUserId, req.body.guild_id, 'RPG Player');//TODO: Replace 'RPG Player' with actual role ID or name.
         return res.send({
           type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
           data: {
@@ -91,7 +91,7 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
     }
 
     if(name === 'test'){
-      console.log('Test command received successfully.');
+      addMemberToRole('1433107396850352279', req.body.guild_id, 'RPG Player');
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {

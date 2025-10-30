@@ -1,4 +1,5 @@
 import 'dotenv/config';
+import { Guild, GuildMember } from 'discord.js';
 
 export async function DiscordRequest(endpoint, options) {
   // append endpoint to root API URL
@@ -52,4 +53,15 @@ export function generateEggMessage(userId) {
     return `<@${userId}> has received a wild ${pokemon} egg! 🥚 Woah! It has two special traits!: ***Example Trait*** and ***Example Trait 2***`;
   }
   return `<@${userId}> has received a wild ${pokemon} egg! 🥚 Incredible! It has THREE special traits! What a freak!!!: ***Example Trait***, ***Example Trait 2***, and ***Example Trait 3***`;
+}
+
+export async function addMemberToRole(userId, guildId, role) {
+  const guild = Guild.fetch(guildId);
+  const member = guild.members.fetch(userId);
+  console.log(member);
+  try {
+    await member.roles.add(role);
+  } catch (error) {
+    console.error('Error adding role to member:', error);
+  }
 }
