@@ -10,6 +10,22 @@ const EGG_COMMAND = {
   contexts: [0, 1, 2],
 };
 
-const ALL_COMMANDS = [EGG_COMMAND];
+const ADDPLAYERBYID_COMMAND = {
+  name: 'addplayertorpg',
+  description: 'Add another user as a player to the RPG.',
+  type: 1,
+  integration_types: [0, 1],
+  contexts: [0, 1, 2],
+  options: [
+    {
+      name: 'userid',
+      description: 'The Discord user ID of the player to add to the RPG',
+      type: 3, // STRING type
+      required: true,
+    },
+  ],
+};
+
+const ALL_COMMANDS = [EGG_COMMAND, ADDPLAYERBYID_COMMAND];
 
 InstallGlobalCommands(process.env.APP_ID, ALL_COMMANDS);
