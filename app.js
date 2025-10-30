@@ -8,8 +8,8 @@ import {
   MessageComponentTypes,
   verifyKeyMiddleware,
 } from 'discord-interactions';
-import pool from './config/db.js';
-import { generateEggMessage } from './utils.js';
+// import pool from './config/db.js';
+import { generateEggMessage, getGuild } from './utils.js';
 import { createUser, getUserById } from './models/userModel.js';
 
 
@@ -41,6 +41,7 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
     const { name } = data;
     // "eggme" command
     if (name === 'eggme') {
+      console.log(getGuild(req.body.guild_id));
       let userId = req.body.member.user.id;
       let message = generateEggMessage(userId);
       return res.send({
@@ -82,15 +83,22 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
         return res.send({
           type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
           data: {
-            flags: InteractionResponseFlags.IS_COMPONENTS_V2,
-            components: [{
-              type: MessageComponentTypes.TEXT_DISPLAY,
-              content: message,
-              allowed_mentions: { users: [addedUserId] }
-            }],
+            flags: InteractionResponseFlags.EPHEMERAL,
+            content: message,
           },
         });
       }
+    }
+
+    if(name === 'test'){
+      console.log('Test command received successfully.');
+      return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          flags: InteractionResponseFlags.EPHEMERAL,
+          content: 'Test command received successfully! ✅',
+        },
+      });
     }
 
     console.error(`unknown command: ${name}`);

@@ -26,6 +26,14 @@ const ADDPLAYERBYID_COMMAND = {
   ],
 };
 
-const ALL_COMMANDS = [EGG_COMMAND, ADDPLAYERBYID_COMMAND];
+const TEST_COMMAND = {
+  name: 'test',
+  description: 'Test command to check bot functionality',
+  type: 1,
+  integration_types: [0, 1],
+  contexts: [0, 1, 2],
+};
+
+const ALL_COMMANDS = [EGG_COMMAND, ADDPLAYERBYID_COMMAND, TEST_COMMAND];
 
 InstallGlobalCommands(process.env.APP_ID, ALL_COMMANDS);
