@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { InstallGlobalCommands } from './utils.js';
+import { InstallGlobalCommands } from '../utils.js';
 
 
 const EGG_COMMAND = {
