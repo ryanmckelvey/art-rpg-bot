@@ -8,7 +8,9 @@ import {
   MessageComponentTypes,
   verifyKeyMiddleware,
 } from 'discord-interactions';
+import pool from './config/db.js';
 import { generateEggMessage } from './utils.js';
+import { createUser, getUserById } from './models/userModel.js';
 
 
 // Create an express app
@@ -48,10 +50,47 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
           components: [{
             type: MessageComponentTypes.TEXT_DISPLAY,
             content: message,
-            allowed_mentions: { users: [userId]}
+            allowed_mentions: { users: [userId] }
           }],
         },
       });
+    }
+
+    if (name === 'addplayertorpg') {
+      let addedUserId = data.options[0].value;
+      //Need to get the name of the user as well as the ID to add them to the DB properly.
+      if ((await getUserById(addedUserId)).length == 0) {
+        console.log('Adding new user to RPG with ID:', addedUserId);
+        createUser(addedUserId, 'PlaceholderUsername');//TODO: Replace PlaceholderUsername with actual username fetch.
+        let message = `${addedUserId} has been added as a player to the RPG! 🎉`;
+        
+        return res.send({
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: {
+            flags: InteractionResponseFlags.IS_COMPONENTS_V2,
+            components: [{
+              type: MessageComponentTypes.TEXT_DISPLAY,
+              content: message,
+              allowed_mentions: { users: [addedUserId] }
+            }],
+          },
+        });
+      }
+      else {
+        console.log('User with ID:', addedUserId, 'is already a player in the RPG.');
+        let message = `${addedUserId} is already a player in the RPG! ❗`;
+        return res.send({
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: {
+            flags: InteractionResponseFlags.IS_COMPONENTS_V2,
+            components: [{
+              type: MessageComponentTypes.TEXT_DISPLAY,
+              content: message,
+              allowed_mentions: { users: [addedUserId] }
+            }],
+          },
+        });
+      }
     }
 
     console.error(`unknown command: ${name}`);
@@ -61,6 +100,11 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
   console.error('unknown interaction type', type);
   return res.status(400).json({ error: 'unknown interaction type' });
 });
+
+/*app.get('/', async (req, res) => {
+  const client = await pool.query('SELECT current_database()');
+  res.send('The database is: ' + client.rows[0].current_database);
+});*/
 
 app.listen(PORT, () => {
   console.log('Listening on port', PORT);
