@@ -11,7 +11,8 @@
   "scripts": {
     "start": "node app.js",
     "register": "node commands.js",
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "deploy-commands": "node --env-file=.env deploy-commands.js"
   },
   "author": "Ryan McKelvey",
   "license": "MIT",
