@@ -41,13 +41,13 @@ const rest = new REST().setToken(process.env.DISCORD_TOKEN);
         console.log('Started refreshing application (/) commands.');
         console.log(commands);
         const data = await rest.put(
-            Routes.applicationCommands(process.env.APP_ID),
+            Routes.applicationGuildCommands(process.env.APP_ID, process.env.TEST_GUILD_ID),
             { body: commands },
         );
         const loadedCommands = await rest.get(
-            Routes.applicationCommands(process.env.APP_ID)
+            Routes.applicationGuildCommands(process.env.APP_ID, process.env.TEST_GUILD_ID)
         );
-        console.log("Commands loaded to guild:", data);
+        console.log("Commands loaded to guild:", loadedCommands);
         console.log(`Successfully reloaded ${data.length} application (/) commands.`);
     } catch (error) {
         console.error(error);
