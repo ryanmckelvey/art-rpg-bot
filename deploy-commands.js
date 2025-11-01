@@ -11,16 +11,18 @@ const __dirname = path.dirname(__filename);
 
 const foldersPath = join(__dirname, 'commands');
 const commandFolders = readdirSync(foldersPath);
+console.log('Command folders found:', commandFolders);
 
 for (const folder of commandFolders) {
     const commandsPath = join(foldersPath, folder);
     const commandFiles = readdirSync(commandsPath).filter(file => file.endsWith('.js'));
     for (const file of commandFiles) {
-        const filePath = join(commandsPath, file);
+        var filePath = join(commandsPath, file);
+        console.log(`Full file path: ${filePath}`);
         try {
-            const fileUrl = pathToFileURL(filePath).href;
-            const imported = await import(fileUrl);
-            const command = imported.default ?? imported;
+            var fileUrl = pathToFileURL(filePath).href;
+            var imported = await import(fileUrl);
+            var command = imported.default ?? imported;
 
             if ('data' in command && 'execute' in command) {
                 commands.push(command.data);
