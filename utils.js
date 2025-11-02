@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { Guild } from 'discord.js';
+import { getUserById } from './models/userModel.js';
 
 export function getRandomPokemon() {
   const pokemonList = ['Bulbasaur', 'Charmander', 'Squirtle', 'Pikachu', 'Eevee', 'Jigglypuff', 'Meowth', 'Psyduck', 'Snorlax', 'Mewtwo'];
@@ -27,4 +27,15 @@ export async function addMemberToRole(userId, guild, role) {
   } catch (error) {
     console.error('Error adding role to member:', error);
   }
+}
+
+export async function generateProfileMessage(userId) {
+  const userData = await getUserById(userId);
+  if(userData.length === 0) {
+    return `<@${userId}> is not in the RPG database yet!`;
+  }
+  console.log("USER DATA: ", userData[0].money);
+  return `**<@${userId}>'s RPG Profile**
+Poké: ${userData[0].money} coins
+`;
 }
