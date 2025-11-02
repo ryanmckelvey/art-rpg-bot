@@ -2,11 +2,14 @@ import { SlashCommandBuilder } from 'discord.js';
 import { createUser, getUserById } from '../../models/userModel.js';
 import { addMemberToRole } from '../../utils.js';
 
-export const data = new SlashCommandBuilder().setName('addplayertorpg').setDescription('Adds the selected player to the RPG.').addMentionableOption(option =>
-    option.setName('player')
-        .setDescription('The player to add to the RPG')
-        .setRequired(true)
-);
+export const data = new SlashCommandBuilder()
+    .setName('addplayertorpg')
+    .setDescription('Adds the selected player to the RPG.')
+    .addUserOption(option =>
+        option.setName('player')
+            .setDescription('The player to add to the RPG')
+            .setRequired(true))
+    .setDefaultMemberPermissions(0);
 
 export async function execute(interaction) {
     let replyMessage;
@@ -18,10 +21,9 @@ export async function execute(interaction) {
         }
         else {
             await createUser(playerToBeAdded.id, playerToBeAdded.username);
-            //Add logic here for assigning roles for player in RPG.
             addMemberToRole(playerToBeAdded.id, interaction.guild, process.env.RPG_PLAYER_ROLE_ID);
             console.log(`Player ${playerToBeAdded.username} added to the RPG database.`);
-            replyMessage = { content: `Player <@${playerToBeAdded.id}> has been added to the RPG! 🎉`, ephemeral: true };
+            replyMessage = { content: `Welcome <@${playerToBeAdded.id}> to the Art RPG! You have been granted the RPG Player role!`, ephemeral: false };
         }
     }
     catch (error) {
