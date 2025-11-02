@@ -1,4 +1,5 @@
 import 'dotenv/config';
+import { Guild } from 'discord.js';
 
 export function getRandomPokemon() {
   const pokemonList = ['Bulbasaur', 'Charmander', 'Squirtle', 'Pikachu', 'Eevee', 'Jigglypuff', 'Meowth', 'Psyduck', 'Snorlax', 'Mewtwo'];
@@ -18,10 +19,9 @@ export function generateEggMessage(userId) {
   return `<@${userId}> has received a wild ${pokemon} egg! 🥚 Incredible! It has THREE special traits! What a freak!!!: ***Example Trait***, ***Example Trait 2***, and ***Example Trait 3***`;
 }
 
-export async function addMemberToRole(userId, guildId, role) {
-  const guild = new Guild();
-  const member = guild.members.fetch(userId);
-  console.log(member);
+export async function addMemberToRole(userId, guild, role) {
+  const member = guild.members.cache.get(userId);
+  console.log("HERE: ", member.roles);
   try {
     await member.roles.add(role);
   } catch (error) {
