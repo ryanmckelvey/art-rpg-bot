@@ -4,7 +4,6 @@ import path from 'path'
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { Client, Collection, Events, GatewayIntentBits, MessageFlags } from 'discord.js';
 
-
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
 client.login(process.env.DISCORD_TOKEN);
@@ -63,4 +62,3 @@ client.on(Events.InteractionCreate, async interaction => {
         }
     }
 });
-
