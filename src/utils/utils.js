@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { getUserById } from '../../models/userModel.js';
+import { getUserById } from '../models/userModel.js';
 
 export function getRandomPokemon() {
   const pokemonList = ['Bulbasaur', 'Charmander', 'Squirtle', 'Pikachu', 'Eevee', 'Jigglypuff', 'Meowth', 'Psyduck', 'Snorlax', 'Mewtwo'];

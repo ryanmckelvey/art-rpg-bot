@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from 'discord.js';
-import { createUser, getUserById } from '../../models/userModel.js';
+import { createUser, getUserById } from '../../src/models/userModel.js';
 import { addMemberToRole } from '../../src/utils/utils.js';
 
 export const data = new SlashCommandBuilder()
