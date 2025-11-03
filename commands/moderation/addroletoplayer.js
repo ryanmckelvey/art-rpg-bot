@@ -1,6 +1,5 @@
 import { SlashCommandBuilder } from 'discord.js';
-import { createUser, getUserById } from '../../models/userModel.js';
-import { addMemberToRole } from '../../utils.js';
+import { addMemberToRole } from '../../src/utils/utils.js';
 
 export const data = new SlashCommandBuilder().setName('addroletoplayer')
     .setDescription('Adds the selected player to the player role.')

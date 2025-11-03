@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from 'discord.js';
-import { generateProfileMessage } from '../../utils.js';
+import { generateProfileMessage } from '../../src/utils/utils.js';
 
 export const data = new SlashCommandBuilder()
     .setName('profile')

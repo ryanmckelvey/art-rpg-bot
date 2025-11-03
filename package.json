@@ -9,9 +9,9 @@
     "node": ">=18.x"
   },
   "scripts": {
-    "start": "node --env-file=.env index.js",
-    "dev": "nodemon --env-file=.env index.js",
-    "deploy-commands": "node --env-file=.env deploy-commands.js"
+    "start": "node --env-file=.env ./src/index.js",
+    "dev": "nodemon --env-file=.env ./src/index.js",
+    "deploy-commands": "node --env-file=.env ./src/utils/deploy-commands.js"
   },
   "author": "Ryan McKelvey",
   "license": "MIT",
