@@ -33,7 +33,6 @@ export async function generateProfileMessage(userId) {
   if (userData.length === 0) {
     return `<@${userId}> is not in the RPG database yet!`;
   }
-  console.log("USER DATA: ", userData[0].money);
   return `**<@${userId}>'s RPG Profile**
 Poké: ${userData[0].money} coins
 `;
