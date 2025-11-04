@@ -7,6 +7,10 @@ export const data = new SlashCommandBuilder()
     .addUserOption(option =>
         option.setName('player')
             .setDescription('The player whose profile you want to view')
+            .setRequired(false))
+    .addBooleanOption(option =>
+        option.setName('public')
+            .setDescription('Do you want to view this profile publically?')
             .setRequired(false));
 
 export async function execute(interaction) {
@@ -19,5 +23,5 @@ export async function execute(interaction) {
         userId = interaction.user.id;
     }
     let message = await generateProfileMessage(userId);
-    await interaction.reply({ content: message, ephemeral: mentionedUser ? true : false });
+    await interaction.reply({ content: message, flags: interaction.options.getBoolean('public') ? undefined : 'Ephemeral' });
 }
