@@ -1,8 +1,9 @@
 import 'dotenv/config';
 import { getUserById } from '../models/userModel.js';
+import { read, readFileSync } from 'node:fs';
 
 export function getRandomPokemon() {
-  const pokemonList = ['Bulbasaur', 'Charmander', 'Squirtle', 'Pikachu', 'Eevee', 'Jigglypuff', 'Meowth', 'Psyduck', 'Snorlax', 'Mewtwo'];
+  const pokemonList = loadCsvToArray();
   return pokemonList[Math.floor(Math.random() * pokemonList.length)];
 }
 
@@ -38,4 +39,11 @@ export async function generateProfileMessage(userId) {
   return `**<@${userId}>'s RPG Profile**
 Poké: ${userData[0].money} coins
 `;
+}
+
+function loadCsvToArray(){
+  const raw = readFileSync('src/assets/pokemon_obtainable_through_eggme_list.json', 'utf-8');
+  const data = JSON.parse(raw);
+  console.log(data);
+  return data.pokemon;
 }
