@@ -1,9 +1,8 @@
 import 'dotenv/config';
 import { getUserById } from '../models/userModel.js';
-import { read, readFileSync } from 'node:fs';
+import { pokemonList } from '../const/pokemon_obtainable_through_eggme_list.js';
 
 export function getRandomPokemon() {
-  const pokemonList = loadCsvToArray();
   return pokemonList[Math.floor(Math.random() * pokemonList.length)];
 }
 
@@ -22,7 +21,6 @@ export function generateEggMessage(userId) {
 
 export async function addMemberToRole(userId, guild, role) {
   const member = guild.members.cache.get(userId);
-  console.log("HERE: ", member.roles);
   try {
     await member.roles.add(role);
   } catch (error) {
@@ -32,18 +30,11 @@ export async function addMemberToRole(userId, guild, role) {
 
 export async function generateProfileMessage(userId) {
   const userData = await getUserById(userId);
-  if(userData.length === 0) {
+  if (userData.length === 0) {
     return `<@${userId}> is not in the RPG database yet!`;
   }
   console.log("USER DATA: ", userData[0].money);
   return `**<@${userId}>'s RPG Profile**
 Poké: ${userData[0].money} coins
 `;
-}
-
-function loadCsvToArray(){
-  const raw = readFileSync('src/assets/pokemon_obtainable_through_eggme_list.json', 'utf-8');
-  const data = JSON.parse(raw);
-  console.log(data);
-  return data.pokemon;
 }
