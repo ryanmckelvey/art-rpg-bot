@@ -15,11 +15,11 @@ export async function execute(interaction) {
     try {
         addMemberToRole(playerToBeAdded.id, interaction.guild, process.env.RPG_PLAYER_ROLE_ID);
         console.log(`Player role added to ${playerToBeAdded.username}`);
-        replyMessage = { content: `Player role added to <@${playerToBeAdded.id}>`, ephemeral: true };
+        replyMessage = { content: `Player role added to <@${playerToBeAdded.id}>`, flags: "Ephemeral" };
     }
     catch (error) {
         console.error('Error adding player to RPG database:', error);
-        replyMessage = { content: `There was an error adding <@${playerToBeAdded.id}> to the RPG player role. Please try again later.`, ephemeral: true };
+        replyMessage = { content: `There was an error adding <@${playerToBeAdded.id}> to the RPG player role. Please try again later.`, flags: "Ephemeral" };
     }
     await interaction.reply(replyMessage);
 }
