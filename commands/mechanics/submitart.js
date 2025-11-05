@@ -1,5 +1,6 @@
 import { SlashCommandBuilder } from 'discord.js';
 import { postArtwork } from '../../src/models/artworkModel.js';
+import { postArtToReviewChannel } from '../../src/utils/moderation/postArtToReviewChannel.js';
 
 export const data = new SlashCommandBuilder()
     .setName('submitart')
@@ -19,5 +20,6 @@ export async function execute(interaction) {
     const username = interaction.user.username;
     console.log(`User ${username} (ID: ${userId}) submitted artwork: ${artwork.url}`);
     postArtwork(userId, artwork.url);
+    postArtToReviewChannel(artwork.url, userId);
     interaction.reply({ content: `Your artwork has been uploaded, <@${userId}>! Your artwork is now awaiting approval. ${artwork.url}`, flags: "Ephemeral" });
 }
