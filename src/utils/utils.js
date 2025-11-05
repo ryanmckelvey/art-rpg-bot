@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import { getUserById } from '../models/userModel.js';
 import { pokemonList } from '../const/pokemon_obtainable_through_eggme_list.js';
+import { DISCORD_API_BASE_URL, DISCORD_POST_MESSAGE_ENDPOINT } from '../const/constants.js';
 
 export function getRandomPokemon() {
   return pokemonList[Math.floor(Math.random() * pokemonList.length)];
@@ -36,4 +37,19 @@ export async function generateProfileMessage(userId) {
   return `**<@${userId}>'s RPG Profile**
 Poké: ${userData[0].money} coins
 `;
+}
+
+export async function postToChannel(channelId, content) {
+  const url = `${DISCORD_API_BASE_URL}${DISCORD_POST_MESSAGE_ENDPOINT(channelId)}`;
+  console.log(`Posting to URL: ${url} with content: ${content}`);
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bot ${process.env.DISCORD_TOKEN}`,
+    },
+    body: JSON.stringify({ 
+      content: content
+     })});
+  return response;
 }
