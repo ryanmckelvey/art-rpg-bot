@@ -4,7 +4,41 @@
 import { postToChannel } from '../utils.js';
 export const postArtToReviewChannel = async (artworkUrl, userId) => {
     const reviewChannelId = process.env.ART_REVIEW_CHANNEL_ID;
-    const content = `New artwork submitted by <@${userId}> for review: ${artworkUrl}`;
-    console.log(`Posting to review channel ${reviewChannelId}: ${content}`);
-    postToChannel(reviewChannelId, content);
+    const content_ = `{
+    "flags": 32768,
+    "components": [
+        {
+            "type": 10,
+            "content": "New artwork submitted by <@${userId}> for review: ${artworkUrl}"
+        },
+        {
+            "type": 12,
+            "items": [
+                {
+                    "media": {
+                        "url": "${artworkUrl}"
+                    }
+                }
+            ]
+        },
+        {
+            "type": 1,
+            "components": [
+                {
+                    "type": 2,
+                    "custom_id": "approve_button",
+                    "label": "Approve ✅",
+                    "style": 1
+                },
+                {
+                    "type": 2,
+                    "custom_id": "reject_button",
+                    "label": "Reject ❌",
+                    "style": 1
+                }
+            ]
+        }
+    ]
+}`;
+    postToChannel(reviewChannelId, content_);
 }

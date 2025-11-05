@@ -39,17 +39,17 @@ Poké: ${userData[0].money} coins
 `;
 }
 
-export async function postToChannel(channelId, content) {
+export async function postToChannel(channelId, body) {
   const url = `${DISCORD_API_BASE_URL}${DISCORD_POST_MESSAGE_ENDPOINT(channelId)}`;
-  console.log(`Posting to URL: ${url} with content: ${content}`);
   const response = await fetch(url, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bot ${process.env.DISCORD_TOKEN}`,
     },
-    body: JSON.stringify({ 
-      content: content
-     })});
+    body: body
+  });
+  const responseText = await response.text();
+  console.log(responseText);
   return response;
 }
