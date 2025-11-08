@@ -2,6 +2,7 @@ import 'dotenv/config';
 import { getUserById } from '../models/userModel.js';
 import { pokemonList } from '../const/pokemon_obtainable_through_eggme_list.js';
 import { DISCORD_API_BASE_URL, DISCORD_POST_MESSAGE_ENDPOINT } from '../const/constants.js';
+import { generateTraits } from './mechanics/egg/traitGenerator.js';
 
 export function getRandomPokemon() {
   return pokemonList[Math.floor(Math.random() * pokemonList.length)];
@@ -11,13 +12,17 @@ export function getRandomPokemon() {
 export function generateEggMessage(userId) {
   let pokemon = getRandomPokemon();
   let numberOfTraits = Math.floor(Math.random() * 20);// Random number between 1 and 20 for traits
+  let traits = []
   if (numberOfTraits <= 15) {
-    return `<@${userId}> has received a wild ${pokemon} egg! 🥚 It only has one special trait!: ***Example Trait***`;
+    traits = generateTraits(1);
+    return `<@${userId}> has received a wild ${pokemon} egg! 🥚 It only has one special trait!: ***${capitalize(traits[0].name)}***`;
   }
   else if (numberOfTraits <= 19) {
-    return `<@${userId}> has received a wild ${pokemon} egg! 🥚 Woah! It has two special traits!: ***Example Trait*** and ***Example Trait 2***`;
+    traits = generateTraits(2);
+    return `<@${userId}> has received a wild ${pokemon} egg! 🥚 Woah! It has two special traits!: ***${capitalize(traits[0].name)}*** and ***${capitalize(traits[1].name)}***`;
   }
-  return `<@${userId}> has received a wild ${pokemon} egg! 🥚 Incredible! It has THREE special traits! What a freak!!!: ***Example Trait***, ***Example Trait 2***, and ***Example Trait 3***`;
+  traits = generateTraits(3);
+  return `<@${userId}> has received a wild ${pokemon} egg! 🥚 Incredible! It has THREE special traits! What a freak!!!: ***${capitalize(traits[0].name)}***, ***${capitalize(traits[1].name)}***, and ***${capitalize(traits[2].name)}***`;
 }
 
 export async function addMemberToRole(userId, guild, role) {
@@ -52,4 +57,8 @@ export async function postToChannel(channelId, body) {
   const responseText = await response.text();
   console.log(responseText);
   return response;
+}
+
+function capitalize(val){
+  return String(val).charAt(0).toUpperCase() + String(val).slice(1);
 }
