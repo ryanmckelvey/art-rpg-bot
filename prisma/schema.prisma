@@ -14,7 +14,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
+model users {
   id      Int      @id @default(autoincrement())
   user_id   String   @unique
   username    String
@@ -22,7 +22,7 @@ model User {
   money     Int 
 }
 
-model Artwork{
+model artworks {
   id      Int      @id @default(autoincrement())
   url String
   user_id String
