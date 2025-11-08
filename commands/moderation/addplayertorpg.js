@@ -13,7 +13,7 @@ export const data = new SlashCommandBuilder()
 
 export async function execute(interaction) {
     let replyMessage;
-    const playerToBeAdded = interaction.options.getMentionable('player').user;
+    const playerToBeAdded = interaction.options.getUser('player');
     console.log(`Adding player ${playerToBeAdded.username} to the RPG...`);
     try {
         if ((await getUserById(playerToBeAdded.id)).length > 0) {

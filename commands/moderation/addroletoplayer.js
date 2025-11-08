@@ -11,7 +11,7 @@ export const data = new SlashCommandBuilder().setName('addroletoplayer')
 
 export async function execute(interaction) {
     let replyMessage;
-    const playerToBeAdded = interaction.options.getMentionable('player').user;
+    const playerToBeAdded = interaction.options.getUser('player');
     try {
         addMemberToRole(playerToBeAdded.id, interaction.guild, process.env.RPG_PLAYER_ROLE_ID);
         console.log(`Player role added to ${playerToBeAdded.username}`);
