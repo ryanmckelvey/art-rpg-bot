@@ -1,10 +1,6 @@
 import 'dotenv/config';
 import { getUserById, getUserPrompts } from '../models/userModel.js';
-import { pokemonList } from '../const/pokemon_obtainable_through_eggme_list.js';
 import { DISCORD_API_BASE_URL, DISCORD_POST_MESSAGE_ENDPOINT } from '../const/constants.js';
-import { generateTraits } from './mechanics/egg/traitGenerator.js';
-
-
 
 export async function addMemberToRole(userId, guild, role) {
   const member = guild.members.cache.get(userId);
@@ -28,7 +24,6 @@ export async function generateProfileMessage(userId) {
   }
   else {
     for (let i = 0; i < userData[0].prompts.length; i++) {
-      console.log(userData);
       promptsPrinted += `- ${userData[0].prompts[i]} \n`;
     }
   }
@@ -38,10 +33,9 @@ Prompts: \n${promptsPrinted}`;
 }
 
 export async function getPromptsForUser(userId) {
-  console.log("getting prompts of user:", userId);
   const row = await getUserPrompts(userId);
   if (row.prompts === null || row.prompts.length === 0) {
-    console.log("Array empty!!!");
+    console.log("Prompts array empty!!!");
     return `This player doesn't have any pokemon collected yet!`;
   }
   for (let i = 0; i < row.prompts.length; i++) {
@@ -60,7 +54,6 @@ export async function postToChannel(channelId, body) {
     body: body
   });
   const responseText = await response.text();
-  console.log(responseText);
   return response;
 }
 

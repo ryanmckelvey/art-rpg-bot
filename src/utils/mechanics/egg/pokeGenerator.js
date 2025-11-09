@@ -21,9 +21,7 @@ export function generateEggMessage(userId) {
         traits = generateTraits(3);
         message = `<@${userId}> has received a wild ${pokemon} egg! 🥚 Incredible! It has THREE special traits! What a freak!!!: ***${capitalize(traits[0].name)}***, ***${capitalize(traits[1].name)}***, and ***${capitalize(traits[2].name)}***`;
     }
-    console.log(`${pokemon} (${traits.map(t => t.name).toString()})`);
     updateUserPrompts(`${pokemon} (${traits.map(t => t.name).toString()})`, userId);
-    console.log(message);
     return message;
 }
 
