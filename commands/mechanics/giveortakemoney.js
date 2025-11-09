@@ -15,6 +15,5 @@ export const data = new SlashCommandBuilder()
 
 export async function execute(interaction) {
     updateUserMoney(interaction.options.getNumber('amount'), interaction.options.getUser('player').id);
-    console.log(interaction.options.getNumber('amount'));
     await interaction.reply({ content: "This will be a command to adjust money of a target player", flags: "Ephemeral" });
 }
