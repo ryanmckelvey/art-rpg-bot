@@ -33,7 +33,6 @@ export function generateTraits(n){
         i--
        }   
     }
-    console.log(traits.length);
     return traits;
 }
 
@@ -41,7 +40,6 @@ function traitsWillConflict(t, newTrait){
     if(t.length === 0) return false;
     let newTraitList = [...t, newTrait];
     let traitNames = newTraitList.map(trait => trait.name);
-    console.log(traitNames);
     for(let j = 0; j < t.length; j++){
         if(traitNames.some(name => t[j].conflicts.includes(name))){
             console.log("A conflict was found: ", t)
