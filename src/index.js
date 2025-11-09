@@ -3,6 +3,7 @@ import { readdirSync } from 'node:fs';
 import path from 'path'
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { Client, Collection, Events, GatewayIntentBits, Partials } from 'discord.js';
+import { approveArtwork } from './utils/moderation/approveReject.js';
 
 const client = new Client({
     intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageReactions],
@@ -70,10 +71,8 @@ client.on(Events.InteractionCreate, async interaction => {
         }
     }
     else if (interaction.type === 3) {
-        const imageUrl = interaction.message.components[1].items[0].media.data.url;
-        const approvalStatus = interaction.customId.includes("approve") ? "Approved" : "Rejected";
-        console.log("Button clicked on Message: ", imageUrl);
-        await interaction.reply({content: `This has been: ${approvalStatus}`});
+        console.log("Resolving approval status for message: ", interaction.message.id);
+        await approveArtwork(interaction);
     }
 });
 
