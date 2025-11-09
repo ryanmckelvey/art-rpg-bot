@@ -1,29 +1,10 @@
 import 'dotenv/config';
-import { getUserById } from '../models/userModel.js';
+import { getUserById, getUserPrompts } from '../models/userModel.js';
 import { pokemonList } from '../const/pokemon_obtainable_through_eggme_list.js';
 import { DISCORD_API_BASE_URL, DISCORD_POST_MESSAGE_ENDPOINT } from '../const/constants.js';
 import { generateTraits } from './mechanics/egg/traitGenerator.js';
 
-export function getRandomPokemon() {
-  return pokemonList[Math.floor(Math.random() * pokemonList.length)];
-}
 
-//Function to generate egg and message for user.
-export function generateEggMessage(userId) {
-  let pokemon = getRandomPokemon();
-  let numberOfTraits = Math.floor(Math.random() * 20);// Random number between 1 and 20 for traits
-  let traits = []
-  if (numberOfTraits <= 15) {
-    traits = generateTraits(1);
-    return `<@${userId}> has received a wild ${pokemon} egg! 🥚 It only has one special trait!: ***${capitalize(traits[0].name)}***`;
-  }
-  else if (numberOfTraits <= 19) {
-    traits = generateTraits(2);
-    return `<@${userId}> has received a wild ${pokemon} egg! 🥚 Woah! It has two special traits!: ***${capitalize(traits[0].name)}*** and ***${capitalize(traits[1].name)}***`;
-  }
-  traits = generateTraits(3);
-  return `<@${userId}> has received a wild ${pokemon} egg! 🥚 Incredible! It has THREE special traits! What a freak!!!: ***${capitalize(traits[0].name)}***, ***${capitalize(traits[1].name)}***, and ***${capitalize(traits[2].name)}***`;
-}
 
 export async function addMemberToRole(userId, guild, role) {
   const member = guild.members.cache.get(userId);
@@ -36,12 +17,36 @@ export async function addMemberToRole(userId, guild, role) {
 
 export async function generateProfileMessage(userId) {
   const userData = await getUserById(userId);
+  let promptsPrinted = "";
+
   if (userData.length === 0) {
     return `<@${userId}> is not in the RPG database yet!`;
   }
+
+  if (userData[0].prompts === null || userData[0].prompts.length === 0) {
+    promptsPrinted = "- *This player doesn't have any Pokemon yet, point and laugh!!!!*";
+  }
+  else {
+    for (let i = 0; i < userData[0].prompts.length; i++) {
+      console.log(userData);
+      promptsPrinted += `- ${userData[0].prompts[i]} \n`;
+    }
+  }
   return `**<@${userId}>'s RPG Profile**
 Poké: ${userData[0].money} coins
-`;
+Prompts: \n${promptsPrinted}`;
+}
+
+export async function getPromptsForUser(userId) {
+  console.log("getting prompts of user:", userId);
+  const row = await getUserPrompts(userId);
+  if (row.prompts === null || row.prompts.length === 0) {
+    console.log("Array empty!!!");
+    return `This player doesn't have any pokemon collected yet!`;
+  }
+  for (let i = 0; i < row.prompts.length; i++) {
+    console.log(row.prompts[i]);
+  }
 }
 
 export async function postToChannel(channelId, body) {
@@ -59,6 +64,6 @@ export async function postToChannel(channelId, body) {
   return response;
 }
 
-function capitalize(val){
+export function capitalize(val) {
   return String(val).charAt(0).toUpperCase() + String(val).slice(1);
 }
