@@ -27,3 +27,11 @@ export const updateUserPrompts = async (prompt, userId) => {
   const res = await pool.query(query, values);
   return res.rows;
 }
+
+export const updateUserMoney = async (amount, userId) => {
+  const query = `UPDATE users SET money = money + $1 WHERE user_id = $2`;
+  const values = [amount, userId];
+  console.log(values);
+  const res = await pool.query(query, values);
+  return res.rows;
+}
