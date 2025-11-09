@@ -4,7 +4,7 @@ export const getUserById = async (userId) => {
   const query = `SELECT * FROM users WHERE user_id = $1`;
   const values = [userId];
   const res = await pool.query(query, values);
-  return res.rows;
+  return res.rows[0];
 }
 
 export const createUser = async (userId, username) => {
@@ -31,7 +31,6 @@ export const updateUserPrompts = async (prompt, userId) => {
 export const updateUserMoney = async (amount, userId) => {
   const query = `UPDATE users SET money = money + $1 WHERE user_id = $2`;
   const values = [amount, userId];
-  console.log(values);
   const res = await pool.query(query, values);
   return res.rows;
 }
