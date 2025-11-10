@@ -4,7 +4,7 @@ export const getUserById = async (userId) => {
   const query = `SELECT * FROM users WHERE user_id = $1`;
   const values = [userId];
   const res = await pool.query(query, values);
-  return res.rows[0];
+  return res.rows;
 }
 
 export const createUser = async (userId, username) => {
