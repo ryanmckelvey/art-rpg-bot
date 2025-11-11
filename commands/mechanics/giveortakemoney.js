@@ -11,7 +11,8 @@ export const data = new SlashCommandBuilder()
     .addNumberOption(option =>
         option.setName('amount')
             .setDescription('Amount money will be adjusted by')
-            .setRequired(true));
+            .setRequired(true))
+    .setDefaultMemberPermissions(0);
 
 export async function execute(interaction) {
     updateUserMoney(interaction.options.getNumber('amount'), interaction.options.getUser('player').id);
