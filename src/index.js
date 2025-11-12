@@ -46,7 +46,7 @@ for (const folder of commandFolders) {
 }
 
 client.on(Events.InteractionCreate, async interaction => {
-    if (!interaction.isCommand() && interaction.type !== 3) {
+    if (!interaction.isCommand() && interaction.type !== 3 && !interaction.isModalSubmit()) {
         console.log("Error, unknown interaction", interaction);
         return;
     };
@@ -73,6 +73,11 @@ client.on(Events.InteractionCreate, async interaction => {
     else if (interaction.type === 3) {
         console.log("Resolving approval status for message: ", interaction.message.id);
         await approveArtwork(interaction);
+    }
+    else if (interaction.isModalSubmit()){
+        console.log("Modal submitted");
+        const selectedValue = interaction.fields.getStringSelectValues('testApprove');
+        await interaction.reply(`You selected: ${selectedValue}`);
     }
 });
 
