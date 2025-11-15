@@ -3,7 +3,7 @@ import { readdirSync } from 'node:fs';
 import path from 'path'
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { Client, Collection, Events, GatewayIntentBits, Partials } from 'discord.js';
-import { approveArtwork } from './utils/moderation/approveReject.js';
+import { approveArtwork, resolveModalSubmission } from './utils/moderation/approveReject.js';
 
 const client = new Client({
     intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMessageReactions],
@@ -75,9 +75,8 @@ client.on(Events.InteractionCreate, async interaction => {
         await approveArtwork(interaction);
     }
     else if (interaction.isModalSubmit()){
-        console.log("Modal submitted");
-        const selectedValue = interaction.fields.getStringSelectValues('testApprove');
-        await interaction.reply(`You selected: ${selectedValue}`);
+        resolveModalSubmission(interaction);
+        return;
     }
 });
 
