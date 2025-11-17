@@ -1,5 +1,6 @@
 import { MessagePayload } from "discord.js";
 import { approvalProcessModal } from '../../const/modals.js';
+import { transactionForUser } from '../economy/transaction.js';
 
 export async function approveArtwork(interaction) {
     const message = interaction.message;
@@ -28,10 +29,10 @@ export async function approveArtwork(interaction) {
 
 export async function resolveModalSubmission(interaction) {
     const message = interaction.message;
-    console.log(message);
     const imageUrl = interaction.message.components[1].items[0].media.data.url;
     const userId = message.components[0].data.content.split(/[@>]/)[1];
 
-    await interaction.reply({ content: `Artwork submitted by <@${userId}>: ${imageUrl} | Has been Approved by <@${interaction.user.id}>` });
+    transactionForUser(userId, interaction.fields.fields.get('rewardSelector').values[0]);
+    await interaction.reply({ content: `Artwork submitted by <@${userId}>: ${imageUrl} | Has been Approved by <@${interaction.user.id}>`});
     message.delete(message.id);
 }

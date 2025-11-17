@@ -8,9 +8,10 @@ export async function transactionForUser(user, amount, interaction) {
     //If no, return the interaction like "Ay yo, you aint got enough!!!"
     const player = await getUserById(user);
     const moneyToBe = player.money + amount; 
-    if ((player.money + amount) < 0) {
+    if ((player.money + amount) < 0 && interaction) {
         await interaction.reply({ content: `You don't have enough money for this action`, flags: 'Ephemeral' });
         return true; 
     }
+    console.log(`Giving user ${user} | ${amount}`);
     updateUserMoney(amount, user);
 }
